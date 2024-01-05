@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Carrousel Communication SDIS77",
+  "description": "Système de Carrousel de communication pour le SDIS77",
+  "version": "1.0",
+  "background": {
+    "service_worker": "./background.js"
+  },
+  "action": {
+    "default_popup": "./index.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

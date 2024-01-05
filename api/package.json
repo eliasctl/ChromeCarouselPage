@@ -1,0 +1,14 @@
+{
+  "name": "api_chrome_carousel",
+  "version": "1.0.0",
+  "description": "API for the chrome carousel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Github : EliasCTL | Website : elidev.fr",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
