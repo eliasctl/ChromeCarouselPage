@@ -1,22 +1,8 @@
 <?php
-$page = 'panier';
-require('config.php');
-require('nav.php');
-
-if (!empty($_GET['recherche'])) {
-    $recherche = htmlentities($_GET['recherche'], ENT_QUOTES, "UTF-8");
-    $liste_des_videos = recherche_liste_film($recherche);
-    
-    if (empty($liste_des_videos)) {
-        $recherche = "Aucun résultat pour la recherche : " . $recherche;
-    }
-} else {
-    $liste_des_videos = recuperer_les_videos();
-    $recherche = "Aucune recherche n'a été effectuée !";
-}
+$page = 'home';
 ?>
 
-<html lang="fr">
+<html lang="en">
 
 <head>
     <style>
@@ -140,19 +126,13 @@ if (!empty($_GET['recherche'])) {
 <body>
     <center>
         <h1 class="title">
-            Movies DataBase & co
+            Chrome Carousel Page
         </h1>
-        <form action="index.php" method="get">
-            <input type="text" name="recherche" placeholder="Rechercher un film">
-            <input type="submit" value="Rechercher">
-            <button type="button" onclick="window.location.href='index.php'">Effacer</button>
-        </form>
 
     </center>
-    <!-- une grille contenant les images des films que l'on a acheté -->
     <div class="grid">
         <?php
-        foreach ($liste_des_videos as $une_video) {
+        foreach ($displaysList as $display) {
             echo '<div class="grid-item">';
             echo '<a class="a" href="info_un_film.php?id_film=' . $une_video['id'] . '">';
             echo '<img src="' . $une_video['image'] . '" alt="" width="75%">';
@@ -160,6 +140,26 @@ if (!empty($_GET['recherche'])) {
             echo '</div>';
         }
         ?>
+        <div class="grid-item">
+            <h3>Go from page to page like a pro</h3>
+            <p>The Google Chrome Carousel Page extension allows you to easily create a list of pages that will be automatically displayed</p>
+        </div>
+        <div class="grid-item">
+            <h3>Import your images</h3>
+            <p>Using our management panel you can import your own images and even choose to post YouTube videos</p>
+        </div>
+        <div class="grid-item">
+            <h3>It's Easy</h3>
+            <p>Our extension is very easy to use, you can create your carousel in just a few clicks</p>
+        </div>
+        <div class="grid-item">
+            <h3>It's Free</h3>
+            <p>Our extension is completely free and will remain so</p>
+        </div>
+        <div class="grid-item">
+            <h3>It's Open Source</h3>
+            <p>Our extension is open source, you can find the source code on our GitHub</p>
+        </div>
     </div>
 
 </body>
