@@ -1,4 +1,4 @@
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -69,7 +69,7 @@
         <input type="checkbox" id="nav-check">
         <div class="nav-header">
             <div class="nav-title">
-                <a href="index.php" title="Accueil"><i class="fa-solid fa-home" style="color: #fff"></i></a>
+                <a href="index.php" title="Home"><i class="fa-solid fa-home" style="color: #fff"></i></a>
             </div>
         </div>
 
@@ -77,15 +77,15 @@
             <?php
             if (!empty($_SESSION['pseudo'])) {
                 if ($_SESSION['type'] === 'admin') {
-                    echo '<a href="admin_liste_films.php" title="Admin liste film"><i class="fa-solid fa-screwdriver-wrench"></i> <i class="fa-solid fa-ticket"></i></a>'; // Liste des films
-                    echo '<a href="admin_liste_utilisateurs.php" title="Admin liste utilisateurs"><i class="fa-solid fa-screwdriver-wrench"></i> <i class="fa-solid fa-users"></i></a>'; // Liste des utilisateurs
+                    echo '<a href="adminDisplaysList.php" title="Admin displays list"><i class="fa-solid fa-screwdriver-wrench"></i> <i class="fa-solid fa-list-check"></i></a>';
+                    echo '<a href="adminUsersList.php" title="Admin users list"><i class="fa-solid fa-screwdriver-wrench"></i> <i class="fa-solid fa-users"></i></a>';
                 }
-                echo '<a href="profile.php" title="Profil"><i class="fa-solid fa-user"></i></a>'; // Profil
-                echo '<a href="panier.php" title="Panier"><i class="fa-solid fa-cart-shopping"></i></a>'; // Panier
-                echo '<a href="deconnexion.php" title="Déconnexion"><i class="fa-solid fa-right-from-bracket"></i></a>'; // Déconnexion
+                echo '<a href="displays.php" title="Displays"><i class="fa-solid fa-display"></i></a>';
+                echo '<a href="profile.php" title="Profile"><i class="fa-solid fa-user"></i></a>';
+                echo '<a href="logout.php" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></a>';
             } else {
-                echo '<a href="connexion.php" title="Connexion"><i class="fa-solid fa-link"></i></a>'; // Connexion
-                echo '<a href="inscription.php" title="Inscription"><i class="fa-solid fa-user-plus"></i></a>'; // Inscription
+                echo '<a href="login.php" title="Login"><i class="fa-solid fa-link"></i></a>';
+                echo '<a href="register.php" title="Register"><i class="fa-solid fa-user-plus"></i></a>';
             }
             ?>
             &emsp;
