@@ -1,23 +1,22 @@
 <?php
-$page = 'profile';
-require('config.php');
-require('nav.php');
-doit_etre_connecte();
-$utilisateur = recuperer_les_utilisateurs()[$_SESSION['id']];
-if (isset($_GET['id_utilisateur'])) {
-    if ($_SESSION['type'] === 'admin') {
-        $utilisateur = recuperer_les_utilisateurs()[$_GET['id_utilisateur']];
+    $page = 'profile';
+    require('config.php');
+    require('nav.php');
+    mustBeLogin();
+    $userId = $_SESSION['id'];
+    if (isset($_GET['userId']) && $_SESSION['perms'] === 'admin') {
+        $userId = $_GET['userId'];
     }
-}
+    $user = getUser($userId);
 ?>
 
-<html lang="fr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil</title>
+    <title>Profile</title>
 
     <style>
         :root {
@@ -33,7 +32,6 @@ if (isset($_GET['id_utilisateur'])) {
 
         .main-box {
             width: 70%;
-            height: 40%;
             background-color: var(--secondaire);
             color: white;
             display: flex;
@@ -166,17 +164,16 @@ if (isset($_GET['id_utilisateur'])) {
 </head>
 
 <script>
-    function modifierCode(id) {
-        alertify.prompt('Chagement de mot de passe', 'Entrez votre nouveau mot de passe', 'Mot de passe', function (evt, value) {
-            //alertify.success(value);
+    function changePwd(id) {
+        alertify.prompt('Password change', 'Enter your new password', 'Password', function (evt, value) {
             if (value.length < 5) {
-                alertify.error("Le mot de passe doit contenir au moins 5 caractères");
+                alertify.error("Password must contain at least 5 characters");
                 return;
             }
             $.ajax({
-                url: 'controler.php',
+                url: 'controller.php',
                 type: 'POST',
-                data: 'action=changer_de_code&id_utilisateur=' + id + '&code=' + value,
+                data: 'action=changePwd&userId=' + id + '&pwd=' + value,
                 dataType: 'html',
                 success: function (code_html, status) {
                     nb = code_html.search(/Ok/i);
@@ -189,8 +186,8 @@ if (isset($_GET['id_utilisateur'])) {
             });
             alertify.confirm().close();
         }, function () {
-            alertify.error("L'opération a été annulée");
-        }).set('labels', { ok: 'Valider', cancel: 'Annuler' });
+            alertify.error("The operation was canceled");
+        });
     }
 </script>
 
@@ -200,21 +197,26 @@ if (isset($_GET['id_utilisateur'])) {
             <i class="fa-solid fa-user fa-2xl pp"></i>
             <div class="infos">
                 <h1>
-                    <?php echo $utilisateur['pseudo'] ?>
+                    <?php echo $user['pseudo'] ?>
                 </h1>
                 <h2>
-                    <?php echo $utilisateur['email']; ?>
+                    <?php echo $user['email']; ?>
                     <br>
                     <br>
-                    <i class="fa-solid fa-wallet"></i>
-                    <?php echo $utilisateur['argent'] . "€"; ?>
+                    <i class="fa-solid fa-tv"></i>
+                    <b><?= $user['nbCarousels']?></b> / <?= $user['permitCarousels']?>
+                    <br>
+                    <br>
+                    <i class="fa-solid fa-image"></i>
+                    <b><?= $user['permitMedias']?></b> / <?= $user['permitMedias']?>
                 </h2>
                 <?php
-                if ($_SESSION['type'] === 'admin') {
-                    echo "<h2>Type: " . $utilisateur['type'] . "</h2>";
+                if ($_SESSION['perms'] === 'admin') {
+                    echo "<h2>Permissions: " . $user['perms'] . "</h2>";
+                    echo "<h2>ID: " . $user['id'] . "</h2>";
                 }
                 ?>
-                <button class="mdp" onclick="modifierCode(<?php echo $utilisateur['id']; ?>)">
+                <button class="mdp" onclick="changePwd(<?php echo $user['id']; ?>)">
                     Modifier mon mot de passe
                 </button>
             </div>
@@ -223,21 +225,27 @@ if (isset($_GET['id_utilisateur'])) {
         <br>
         <div class="achats">
             <div class="titre">
-                <h1>Historique des achats</h1>
+                <h1>My Carousels
+                    <?php if ($user['nbCarousels'] < $user['permitCarousels']) { ?>
+                        <a href="editCarousel.php?action=add&userId=<?= $user['id'] ?>"><i class="fa-solid fa-square-plus fa-xl" style="color: grey;"></i></a>
+                    <?php } ?>
+                </h1>
             </div>
             <table>
                 <tr class="achat-infos">
-                    <th>Titre</th>
-                    <th>Image</th>
-                    <th>Télécharger</th>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Actions</th>
                 </tr>
                 <?php
-                $achats = recuperer_les_achats($utilisateur['id']);
-                foreach ($achats as $un_film) {
-                    echo "<tr class'achat-content'>";
-                    echo "<td><a href='info_un_film.php?id_film=" . $un_film['id'] . "'>" . $un_film['titre'] . "</a></td>";
-                    echo "<td><img src='" . $un_film['image'] . "' width='100px' height='100px'></td>";
-                    echo "<td><a href='videos/" . $un_film['telechargement'] . ".mp4' download><i class='fa-solid fa-download'></i></a></td>";
+                $carousels = getCarousels($user['id']);
+                foreach ($carousels as $carousel) {
+                    echo "<tr>";
+                    echo "<td>" . $carousel['id'] . "</td>";
+                    echo "<td>" . $carousel['title'] . "</td>";
+                    echo "<td>" . $carousel['description'] . "</td>";
+                    echo "<td><a href='editCarousel.php?carouselId=".$carousel['id']."'><i class='fa-solid fa-pen'></i></a><i class='fa-solid fa-trash' onlick='deleteCarousel(\'".$carousel['id']."\')'></i></td>";
                     echo "</tr>";
                 }
                 ?>

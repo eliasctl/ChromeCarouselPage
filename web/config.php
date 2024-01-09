@@ -1,7 +1,7 @@
 <?php
 session_start();
 require('fonctions.php');
-require('assets/assets.php');
+require('assets/assets.html');
 
 $local_linux = true;
 if ($local_DB === true) {

@@ -76,11 +76,10 @@
         <div class="nav-links">
             <?php
             if (!empty($_SESSION['pseudo'])) {
-                if ($_SESSION['type'] === 'admin') {
-                    echo '<a href="adminDisplaysList.php" title="Admin displays list"><i class="fa-solid fa-screwdriver-wrench"></i> <i class="fa-solid fa-list-check"></i></a>';
+                if ($_SESSION['perms'] === 'admin') {
                     echo '<a href="adminUsersList.php" title="Admin users list"><i class="fa-solid fa-screwdriver-wrench"></i> <i class="fa-solid fa-users"></i></a>';
                 }
-                echo '<a href="displays.php" title="Displays"><i class="fa-solid fa-display"></i></a>';
+                echo '<a href="media.php" title="Media"><i class="fa-solid fa-image"></i></a>';
                 echo '<a href="profile.php" title="Profile"><i class="fa-solid fa-user"></i></a>';
                 echo '<a href="logout.php" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></a>';
             } else {

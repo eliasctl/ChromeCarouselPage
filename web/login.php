@@ -144,13 +144,13 @@ require('nav.php');
             } else {
                 $Pseudo = htmlentities($_POST['pseudo'], ENT_QUOTES, "UTF-8");
                 $Pwd = hash('sha256', $_POST['pwd']);
-                $query = "SELECT * FROM utilisateurs WHERE pseudo='" . $Pseudo . "' AND pwd='" . $Pwd . "'";
+                $query = "SELECT * FROM users WHERE pseudo='" . $Pseudo . "' AND pwd='" . $Pwd . "'";
                 $result = mysqli_query($conn, $query) or die(mysql_error());
                 if (mysqli_num_rows($result) == 1) {
                     $row = mysqli_fetch_assoc($result);
                     $_SESSION['pseudo'] = $row['pseudo'];
                     $_SESSION['id'] = $row['id'];
-                    $_SESSION['auth'] = $row['auth'];
+                    $_SESSION['perms'] = $row['perms'];
                     echo "<p class='sucess-message'>You are well login <a href='index.php'>click here</a> !</p>";
                     $AfficherFormulaire = 0;
                     exit();
@@ -166,7 +166,7 @@ require('nav.php');
             <div class="container">
                 <h1>Login</h1>
                 <br />
-                <form method="post" action="connexion.php">
+                <form method="post" action="login.php">
                     Username :
                     <input type="text" name="pseudo">
                     <br />
@@ -177,15 +177,15 @@ require('nav.php');
                 <div class="methode-con">
                     Login as :
                     <div class="methode-con-small">
-                        <form class="methode-con-btn" method="post" action="connexion.php">
+                        <form class="methode-con-btn" method="post" action="login.php">
                             <input type="text" name="pseudo" value="user" style="display: none">
-                            <input type="password" name="code" value="user" style="display: none">
+                            <input type="password" name="pwd" value="user" style="display: none">
                             <input type="submit" name="post" value="user">
                         </form>
                         or
-                        <form class="methode-con-btn" method="post" action="connexion.php">
+                        <form class="methode-con-btn" method="post" action="login.php">
                             <input type="text" name="pseudo" value="admin" style="display: none">
-                            <input type="password" name="code" value="admin" style="display: none">
+                            <input type="password" name="pwd" value="admin" style="display: none">
                             <input type="submit" name="post" value="admin">
                         </form>
                     </div>

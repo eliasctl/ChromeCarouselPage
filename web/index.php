@@ -1,5 +1,8 @@
 <?php
 $page = 'home';
+include_once('config.php');
+include_once('nav.php');
+
 ?>
 
 <html lang="en">
@@ -131,15 +134,6 @@ $page = 'home';
 
     </center>
     <div class="grid">
-        <?php
-        foreach ($displaysList as $display) {
-            echo '<div class="grid-item">';
-            echo '<a class="a" href="info_un_film.php?id_film=' . $une_video['id'] . '">';
-            echo '<img src="' . $une_video['image'] . '" alt="" width="75%">';
-            echo '</a>';
-            echo '</div>';
-        }
-        ?>
         <div class="grid-item">
             <h3>Go from page to page like a pro</h3>
             <p>The Google Chrome Carousel Page extension allows you to easily create a list of pages that will be automatically displayed</p>

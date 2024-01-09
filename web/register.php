@@ -111,7 +111,6 @@
     <center class="error-message">
 
         <?php
-        // si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
         $AfficherFormulaire = 1;
         if (isset($_SESSION['pseudo'])) {
             echo "You are already login <a href='index.php'>click here</a> !";
@@ -119,7 +118,6 @@
             exit();
         }
 
-        // si le formulaire a été envoyé, on vérifie que tous les champs sont remplis correctement et on insert l'utilisateur dans la base de données
         if (isset($_POST['pseudo'], $_POST['pwd'], $_POST['email'])) {
             if (empty($_POST['pseudo']) || empty($_POST['pwd']) || empty($_POST['email'])) {
                 echo "Please complete all fields.";
@@ -157,7 +155,7 @@
             <br>
             <div class="container">
                 <h1>Register</h1>
-                <form method="post" action="inscription.php">
+                <form method="post" action="register.php">
                     Email : <input type="text" name="email">
                     <br />
                     Username : <input type="text" name="pseudo">
