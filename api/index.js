@@ -1,6 +1,9 @@
 // récupere les fonctions dans le fichier functions.js
 import * as functions from './functions.js';
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+//import swaggerFile from './swagger_output.json';
+import swaggerFile from './swagger_output.json' assert { type: 'json' };
 const app = express()
 const port = 3000
 
@@ -13,6 +16,8 @@ app.use(function (req, res, next) {
     }
     next();
 });
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.get('/', (req, res) => {
     res.send('API Dev&+ Google Chrome Carousel Page')
