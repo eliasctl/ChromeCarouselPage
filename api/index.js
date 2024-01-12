@@ -1,4 +1,6 @@
-const express = require('express')
+// récupere les fonctions dans le fichier functions.js
+import * as functions from './functions.js';
+import express from 'express';
 const app = express()
 const port = 3000
 
@@ -13,23 +15,33 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    res.send('API Dev&+')
+    res.send('API Dev&+ Google Chrome Carousel Page')
 })
 
 app.get('/help', (req, res) => {
-    // redirige vers google
     res.redirect('http://elidev.fr');
 })
 
-app.get('/googleExtCarrouselComm/:displayCaracters', (req, res) => {
-    //
-    res.json({ displayType: "public", displayCaracters: req.params.displayCaracters });
+app.get('/displayList/:displayId', (req, res) => {
+    functions.getDisplayList(req.params.displayId)
+        .then((list) => {
+            res.send(list);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 })
 
-app.get('/googleExtCarrouselComm/:displayCaracters/type', (req, res) => {
-    res.json({ displayType: "public" });
+app.get('/displayList/:displayId/exist', (req, res) => {
+    functions.getDisplayListExist(req.params.displayId)
+        .then((exist) => {
+            res.send(exist);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 })
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`The app are started on port ${port}`)
 })

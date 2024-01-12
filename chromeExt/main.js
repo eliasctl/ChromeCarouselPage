@@ -18,7 +18,7 @@ function activateListeners() {
         // displayCaracters seulement des lettres en majuscule et des chiffres
         const displayCaracters = document.getElementById('links').value;
         if (displayCaracters == '') return;
-        document.getElementById('links').value = displayCaracters.toUpperCase();
+        //document.getElementById('links').value = displayCaracters.toUpperCase();
         // supprime les espaces
         document.getElementById('links').value = displayCaracters.replace(/\s/g, '');
         // supprime les caractères spéciaux
@@ -52,15 +52,18 @@ function activateListeners() {
 
     document.getElementById("displayCaracters").addEventListener("change", async function () {
         displayCaracters = document.getElementById('displayCaracters').value;
-        displayCaracters = displayCaracters.toUpperCase();
+        //displayCaracters = displayCaracters.toUpperCase();
+        displayCaracters.replace(/\s/g, '');
         displayCaracters.replace(/[^A-Z0-9]/ig, "");
 
         const tab = await getCurrentTab();
         chrome.runtime.sendMessage({
             cmd: "updateDisplayCaracters",
             tab: tab,
-            displayCaracters: displayCaracters
+            displayCaractersTmp: displayCaracters
         }, function (res) {
+            console.log('Res get : ' + res.returndata);
+
             if (res == "public") {
                 document.getElementById("buttonCheck").style.fill = 'green';
                 document.getElementById("printDisplayType").innerHTML = "Affichage public";
@@ -87,15 +90,17 @@ function activateListeners() {
 
     document.getElementById("displayCaracters").addEventListener("keyup", async function () {
         displayCaracters = document.getElementById('displayCaracters').value;
-        displayCaracters = displayCaracters.toUpperCase();
+        //displayCaracters = displayCaracters.toUpperCase();
+        displayCaracters.replace(/\s/g, '');
         displayCaracters.replace(/[^A-Z0-9]/ig, "");
 
         const tab = await getCurrentTab();
         chrome.runtime.sendMessage({
             cmd: "updateDisplayCaracters",
             tab: tab,
-            displayCaracters: displayCaracters
+            displayCaractersTmp: displayCaracters
         }, function (res) {
+            console.log('Res get : ' + res.returndata);
             if (res == "public") {
                 document.getElementById("buttonCheck").style.fill = 'green';
                 document.getElementById("printDisplayType").innerHTML = "Affichage public";
@@ -161,10 +166,10 @@ async function updatePopup() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    //activateListeners();
-    //updatePopup();
-    chrome.runtime.sendMessage({
-        cmd: "testAPI"
-    });
+    activateListeners();
+    updatePopup();
+    // chrome.runtime.sendMessage({
+    //     cmd: "testAPI"
+    // });
     document.getElementById("displayCaracters").focus();
 }, false);

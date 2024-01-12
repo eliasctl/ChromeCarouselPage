@@ -1,3 +1,5 @@
+//const { get } = require("http");
+
 // The code below is in charge of keeping the background script alive to update the badge and refresh the page on time.
 const onUpdate = (tabId, info, tab) => /^https?:/.test(info.url) && findTab([tab]);
 findTab();
@@ -62,15 +64,15 @@ async function startCarousel(tab, displayCaracters) {
     });
     const tabId = tab.id;
 
-    const response = await fetch('http://eliascastel.ddns.com/', {
+    const response = await fetch('localhost:3000/displayList/' + displayCaracters, {
         method: 'GET',
         body: JSON.stringify({ displayCaracters: displayCaracters }),
         headers: {
             'Content-Type': 'application/json'
         }
     });
+    console.log(response);
     const data = await response.json();
-    // reponse de la forme d'un tableau json [{link: "lien1", interval: en minutes}, {link: "lien2", duree: en minutes}, ...]
 
     currentTabs[tabId] = {
         displayCaracters: displayCaracters,
@@ -128,24 +130,6 @@ function stopCarousel(tab) {
     return;
 }
 
-async function getDisplayCaractersType(displayCaracters) {
-    if (displayCaracters == "") {
-        return "null";
-    }
-
-    const response = await fetch('http://localhost:3000/', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    const data = await response.json();
-    console.log(data);
-    //return data.displayType;
-
-    //return "public";
-}
-
 function getInfoCarrousel(tab) {
     const tabId = tab.id;
     if (!currentTabs[tabId]) {
@@ -155,6 +139,33 @@ function getInfoCarrousel(tab) {
         }
     }
     return { displayCaractersTmp: currentTabs[tabId].displayCaractersTmp, isActive: currentTabs[tabId].isActive, displayCaractersType: getDisplayCaractersType(currentTabs[tabId].displayCaractersTmp) };
+}
+
+async function getDisplayCaractersType(displayCaracters) {
+    console.log(displayCaracters);
+    console.log('http://localhost:3000/displayList/' + displayCaracters + '/exist');
+    if (displayCaracters == "") {
+        return "null";
+    }
+
+    const response = await fetch('http://localhost:3000/displayList/' + displayCaracters + '/exist', {
+        method: 'GET',
+    });
+    const data = await response.text();
+    console.log(data);
+    var returndata = "";
+    if (data == "public" || data == "true") {
+        returndata = "public";
+    }
+    else if (data == "private") {
+        returndata = "private";
+    }
+    else {
+        returndata = "null";
+    }
+    console.log('returndate : ' + returndata);
+    return returndata;
+
 }
 
 chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
@@ -172,11 +183,8 @@ chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
 
     if (req.cmd == "updateDisplayCaracters") {
         currentTabs[req.tab.id].displayCaractersTmp = req.displayCaractersTmp;
-        sendResponse(getDisplayCaractersInfo(req.displayCaractersTmp));
-    }
-
-    if (req.cmd = "testAPI") {
-        getDisplayCaractersType("testAPI");
+        console.log(getDisplayCaractersType(req.displayCaractersTmp));
+        sendResponse(getDisplayCaractersType(req.displayCaractersTmp));
     }
 
     sendResponse({});

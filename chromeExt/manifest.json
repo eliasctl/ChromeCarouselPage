@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Carrousel Communication SDIS77",
-  "description": "Système de Carrousel de communication pour le SDIS77",
+  "name": "Chrome Carousel Page",
+  "description": "Chrome Carousel Page",
   "version": "1.0",
   "background": {
     "service_worker": "./background.js"
